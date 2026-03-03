@@ -3,7 +3,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api', // proxied to http://localhost:5000 in dev
+  // Uses env variable in production, falls back to proxy in development
+  baseURL: process.env.REACT_APP_API_URL
+    ? `${process.env.REACT_APP_API_URL}/api`
+    : '/api',
 });
 
 // Attach token from localStorage before each request
