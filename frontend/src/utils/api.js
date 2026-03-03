@@ -22,11 +22,17 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    const isAuthRoute = error.config?.url?.includes('/auth/');
+    const isUnauthorized =
+      error.response?.status === 401 || error.response?.status === 403;
+
+    if (isUnauthorized && !isAuthRoute) {
+      // Only redirect on protected routes, NOT on login/signup attempts
       localStorage.removeItem('ft_token');
       localStorage.removeItem('ft_user');
       window.location.href = '/signin';
     }
+
     return Promise.reject(error);
   }
 );
