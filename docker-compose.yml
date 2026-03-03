@@ -1,0 +1,69 @@
+# docker-compose.yml
+# Runs all 3 services: PostgreSQL, Backend (Node.js), Frontend (React + Nginx)
+# Usage: docker compose up --build
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────────
+  db:
+    image: postgres:15-alpine          # Official lightweight Postgres image
+    container_name: fintrack_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: finance_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123   # Change this in production!
+    volumes:
+      # Persist database data between restarts
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run schema.sql when the container first starts
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"                    # Expose so pgAdmin can still connect if needed
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Node.js Backend ──────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fintrack_backend
+    restart: unless-stopped
+    environment:
+      # These override the .env file inside the container
+      DB_HOST: db                      # "db" = the postgres service name above
+      DB_PORT: 5432
+      DB_NAME: finance_tracker
+      DB_USER: postgres
+      DB_PASSWORD: postgres123         # Must match POSTGRES_PASSWORD above
+      JWT_SECRET: change_this_to_a_long_random_secret_in_production
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy     # Wait for Postgres to be ready before starting
+    volumes:
+      # Live reload: sync code changes without rebuilding (development only)
+      - ./backend:/app
+      - /app/node_modules              # Keep container's node_modules separate
+
+  # ── React Frontend (served by Nginx) ────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: fintrack_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"                      # Access app at http://localhost:3000
+    depends_on:
+      - backend
+
+# ── Named Volumes ────────────────────────────────────────────
+volumes:
+  postgres_data:                       # Persists DB data between docker compose down/up

@@ -1,0 +1,54 @@
+# render.yaml
+# Render "Infrastructure as Code" - defines all services in one file
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  # ── Backend ────────────────────────────────────────────────
+  - type: web
+    name: fintrack-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: fintrack-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: fintrack-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: fintrack-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: fintrack-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: fintrack-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true            # Render auto-generates a secure random value
+      - key: PORT
+        value: "5000"
+      - key: FRONTEND_URL
+        value: https://fintrack-frontend.onrender.com   # Update with your actual URL
+
+  # ── Frontend ───────────────────────────────────────────────
+  - type: web
+    name: fintrack-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    plan: free
+
+# ── PostgreSQL Database ─────────────────────────────────────
+databases:
+  - name: fintrack-db
+    plan: free
+    databaseName: finance_tracker
+    user: postgres
