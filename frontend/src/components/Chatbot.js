@@ -51,8 +51,8 @@ export default function Chatbot({ onTransactionLogged }) {
         role: 'bot',
         text: `👋 Hey ${user?.name?.split(' ')[0] || 'there'}! I'm your FinTrack assistant.\n\n` +
           `I can help you:\n` +
-          `• **Log expenses** — "Spent $30 on lunch"\n` +
-          `• **Log income** — "Received $2000 salary"\n` +
+          `• **Log expenses** — "Spent RM30 on lunch"\n` +
+          `• **Log income** — "Received RM2000 salary"\n` +
           `• **Quick summary** — "Show my summary"\n` +
           `• **Monthly report** — "Monthly report"\n\n` +
           `What would you like to do today?`,
@@ -178,7 +178,7 @@ export default function Chatbot({ onTransactionLogged }) {
       <div className="chat-input-area">
         <textarea
           className="chat-input"
-          placeholder='Try: "Spent $25 on coffee" or "Show my summary"'
+          placeholder='Try: "Spent RM25 on coffee" or "Show my summary"'
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}

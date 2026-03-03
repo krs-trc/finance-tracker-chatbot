@@ -46,7 +46,7 @@ export default function Dashboard() {
           <div className="nav-balance">
             <span className="nav-balance-label">Total Balance</span>
             <span className={`nav-balance-value ${parseFloat(totalBalance) < 0 ? 'negative' : ''}`}>
-              {loadingBalance ? '—' : `${parseFloat(totalBalance) >= 0 ? '+' : ''}$${Math.abs(parseFloat(totalBalance)).toFixed(2)}`}
+              {loadingBalance ? '—' : `${parseFloat(totalBalance) >= 0 ? '+' : ''}RM${Math.abs(parseFloat(totalBalance)).toFixed(2)}`}
             </span>
           </div>
         </div>
