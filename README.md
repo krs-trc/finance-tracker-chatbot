@@ -41,6 +41,7 @@ A  chatbot interface to log income and expenses, track daily allowance, upcoming
 | Styling | Custom CSS with CSS variables |
 
 This app is deployed using **Render** (frontend + backend) and **Neon** (PostgreSQL database).
+
 ---
 
 ## Local Setup
