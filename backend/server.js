@@ -7,21 +7,27 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ─── Middleware ──────────────────────────────────────────────────────────────
-const allowedOrigins = [
-  'http://localhost:3000',    // Local dev
-  'http://localhost:80',      // Docker nginx
-  process.env.FRONTEND_URL,   // Production URL (set in Railway/Render)
-].filter(Boolean);
 
+// Allows all localhost in dev, specific URL in production
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow request with no origin (mobile apps, curl, server-to-server)
+  origin: function (origin, callback) {
+    // Allow requests with no origin (Postman, curl, mobile apps)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    callback(new Error(`CORS blocked: ${origin}`));
+
+    // Allow anything localhost in development
+    if (origin.startsWith('http://localhost')) return callback(null, true);
+
+    // Allow your production frontend URL
+    if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) {
+      return callback(null, true);
+    }
+
+    // Block everything else
+    return callback(new Error(`CORS blocked: ${origin}`));
   },
   credentials: true,
 }));
+
 app.use(express.json());
 
 // ─── Routes ─────────────────────────────────────────────────────────────────
