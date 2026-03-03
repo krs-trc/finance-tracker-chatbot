@@ -48,22 +48,22 @@ router.get('/', auth, async (req, res) => {
 
   if (month && year) {
     paramCount++;
-    query += ` AND EXTRACT(MONTH FROM transaction_date) = $${paramCount}`;
+    query += ` AND EXTRACT(MONTH FROM transaction_date) = RM${paramCount}`;
     params.push(month);
     paramCount++;
-    query += ` AND EXTRACT(YEAR FROM transaction_date) = $${paramCount}`;
+    query += ` AND EXTRACT(YEAR FROM transaction_date) = RM${paramCount}`;
     params.push(year);
   }
 
   if (type) {
     paramCount++;
-    query += ` AND type = $${paramCount}`;
+    query += ` AND type = RM${paramCount}`;
     params.push(type);
   }
 
   query += ` ORDER BY transaction_date DESC, created_at DESC`;
   paramCount++;
-  query += ` LIMIT $${paramCount}`;
+  query += ` LIMIT RM${paramCount}`;
   params.push(limit);
 
   try {

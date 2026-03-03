@@ -56,7 +56,7 @@ function parseTransactionMessage(message) {
 
 // Format currency
 function formatCurrency(amount) {
-  return `$${parseFloat(amount).toFixed(2)}`;
+  return `RM${parseFloat(amount).toFixed(2)}`;
 }
 
 // Format month name
@@ -175,8 +175,8 @@ router.post('/', auth, async (req, res) => {
     // ── COMMAND: Help ────────────────────────────────────────────────────
     if (/help|what can you do|commands|how to use/.test(lower)) {
       const reply = `🤖 **Here's what I can do:**\n\n` +
-        `💸 **Log Expense:**\n  "Spent $25 on lunch"\n  "Paid $100 for electricity bill"\n\n` +
-        `💰 **Log Income:**\n  "Received $2000 salary"\n  "Earned $500 from freelance"\n\n` +
+        `💸 **Log Expense:**\n  "Spent RM25 on lunch"\n  "Paid RM100 for electricity bill"\n\n` +
+        `💰 **Log Income:**\n  "Received RM2000 salary"\n  "Earned RM500 from freelance"\n\n` +
         `📊 **Quick Summary:**\n  "Show my summary"\n  "How am I doing?"\n\n` +
         `📋 **Monthly Report:**\n  "Monthly report"\n  "Report for March"\n\n` +
         `Just type naturally — I'll figure it out! 😊`;
@@ -212,8 +212,8 @@ router.post('/', auth, async (req, res) => {
 
     // ── DEFAULT: Unrecognized ────────────────────────────────────────────
     const reply = `🤔 I didn't quite catch that. Here are some things you can try:\n\n` +
-      `• "Spent $30 on groceries"\n` +
-      `• "Received $1500 salary"\n` +
+      `• "Spent RM30 on groceries"\n` +
+      `• "Received RM1500 salary"\n` +
       `• "Show my summary"\n` +
       `• "Monthly report"\n\n` +
       `Type **"help"** to see all commands!`;
