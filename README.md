@@ -6,18 +6,6 @@ A  chatbot interface to log income and expenses, track daily allowance, upcoming
 
 ---
 
-## Screenshots
-
-### Sign In
-![Sign In](<img width="1222" height="662" alt="image" src="https://github.com/user-attachments/assets/164a2f79-e64d-440a-a3c6-63dedf51ed5b" />
-)
-
-### Dashboard
-![Dashboard](<img width="1350" height="660" alt="image" src="https://github.com/user-attachments/assets/338ea133-0f41-4fcc-af29-05bbaea2bf39" />
-)
-
----
-
 ## Features
 
 - **Authentication** — Sign up and sign in with JWT-based sessions
